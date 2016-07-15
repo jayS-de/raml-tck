@@ -1,0 +1,16 @@
+#%RAML 1.0
+
+# Objective: This RAML illustrates another example on whats the default type for a media type without a value
+# Expected result: no error message
+
+# tags: default type, any, body
+
+title: Default type any with media type
+
+/customers:
+  get:
+    responses:
+      200:
+        body:
+          application/json:
+            # default type is `any`

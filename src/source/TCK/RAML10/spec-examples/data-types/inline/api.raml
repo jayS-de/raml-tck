@@ -1,0 +1,23 @@
+#%RAML 1.0
+
+# Objective: This RAML illustrates an example of an inline type declaration
+# Expected result: no error
+
+# tags: type, inline
+
+title: Inline type declaration
+
+/users/{id}:
+  get:
+    responses:
+      200:
+        body:
+          application/json:
+            type: object
+            properties:
+              firstname:
+                type: string
+              lastname:
+                type: string
+              age:
+                type: number

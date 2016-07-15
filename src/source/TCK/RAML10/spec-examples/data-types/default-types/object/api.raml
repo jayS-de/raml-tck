@@ -1,0 +1,13 @@
+#%RAML 1.0
+
+# Objective: This RAML illustrates when 'object' is the default type.
+# Expected result: no error message and Person is of type object
+
+# tags: type, default type, object
+
+title: Default type object
+
+types:
+  Person:
+    # default type is `object`, no need to explicitly define it
+    properties:

@@ -1,0 +1,22 @@
+#%RAML 1.0
+
+# Objective: The following example shows a sinple tpye declaration and how you can reference to it from within a body.
+# Expected result: no error message
+
+# tags: type
+
+title: API with Types
+types:
+  User:
+    type: object
+    properties:
+      firstname: string
+      lastname:  string
+      age:       number
+/users/{id}:
+  get:
+    responses:
+      200:
+        body:
+          application/json:
+            type: User

@@ -1,0 +1,20 @@
+#%RAML 1.0
+
+# Objective: The following example shows an array declaration.
+# Expected result: no error message
+
+# tags: type, array
+
+title: Expanded Array Type with Example
+
+types:
+  Email:
+    type: object
+    properties:
+      name:
+        type: string
+  Emails:
+    type: array
+    items: Email
+    minItems: 1
+    uniqueItems: true

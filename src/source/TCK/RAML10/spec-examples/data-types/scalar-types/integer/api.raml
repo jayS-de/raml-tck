@@ -1,0 +1,16 @@
+#%RAML 1.0
+
+# Objective: This RAML illustrates an example of how to define an integer type.
+# Expected result: no error message
+
+# tags: type, integer
+
+title: Integer Type
+
+types:
+  Age:
+    type: integer
+    minimum: 3
+    maximum: 5
+    format: int8
+    multipleOf: 1

@@ -1,0 +1,23 @@
+#%RAML 1.0
+
+# Objective: This RAML illustrates an example of how default media types get automatically applied or in the /send resources overriden.
+# Expected result: no error message, /send overrides the default media type and only supports application/json, and /list has two media types: application/json and application/xml both using the Person[] type
+
+# tags: default media type, media type
+
+title: New API
+mediaType: [ application/json, application/xml ]
+
+types:
+  Person:
+  Another:
+/list:
+  get:
+    responses:
+      200:
+        body: Person[]
+/send:
+  post:
+    body:
+      application/json:
+        type: Another

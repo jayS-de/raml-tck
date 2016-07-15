@@ -1,0 +1,29 @@
+#%RAML 1.0
+
+# Objective: This RAML illustrates an example of an invalid use of the discriminator facet for unions.
+# Expected result: error message that indicates that the discriminator facet is not allowed in unions or inline type declarations.
+
+# tags: type, object, discriminator
+
+title: Invalid Discriminator Usage
+
+description: |
+  This RAML illustrates two examples that discriminator is not allowed in any inline
+  type declaration and for union types.
+
+types:
+  Person:
+  Dog:
+  PersonOrDog:
+    type: Person | Dog
+    discriminator: hasTail # not allowed
+
+/inline:
+  get:
+    responses:
+      200:
+        body:
+          application/json:
+            discriminator: kind # not allowed
+            properties:
+              kind: string

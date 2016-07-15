@@ -1,0 +1,18 @@
+#%RAML 1.0
+
+# Objective: This RAML illustrates an example of how to define a file type.
+# Expected result: no error message
+
+# tags: type, file
+
+title: File Type
+
+types:
+  userPicture:
+    type: file
+    fileTypes: ['image/jpeg', 'image/png']
+    maxLength: 307200
+  customFile:
+    type: file
+    fileTypes: ['*/*'] # any file type allowed
+    maxLength: 1048576

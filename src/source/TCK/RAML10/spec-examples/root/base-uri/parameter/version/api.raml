@@ -1,0 +1,10 @@
+#%RAML 1.0
+
+# Objective: The following example RAML API definition uses a Template URI as the base URI and the 'version' base URI parameter.
+# Expected result: no error message and a baseUriParameter definition for 'version' with type string
+
+# tags: base uri, template uri, parameter
+
+title: Salesforce Chatter REST API
+version: v28.0
+baseUri: https://na1.salesforce.com/services/data/{version}/chatter

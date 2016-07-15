@@ -1,0 +1,15 @@
+#%RAML 1.0
+
+# Objective: The following example shows how to assign a value to the parameter scopes in a security scheme.
+# Expected result: no error message
+
+# tags: security scheme
+
+title: GitHub API
+version: v3
+baseUri: https://api.github.com
+securitySchemes:
+  oauth_2_0: !include securitySchemes/oauth_2_0.raml
+/users/{userid}/gists:
+  get:
+    securedBy: [null, oauth_2_0: { scopes: [ ADMINISTRATOR ] } ]

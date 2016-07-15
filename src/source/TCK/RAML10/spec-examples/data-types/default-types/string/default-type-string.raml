@@ -1,0 +1,13 @@
+#%RAML 1.0
+
+# Objective: This RAML illustrates another example on whats the default type when you don't define an explicit type facet or properties facet
+# Expected result: no error message and the type applied is 'string'
+
+# tags: default type, string
+
+title: Default type string
+
+types:
+  Person:
+    properties:
+      name: # no type or schema necessary since the default type is `string`
