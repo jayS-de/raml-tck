@@ -173,7 +173,7 @@ function getTests(dirContent) {
         result = dirContent.masterAPIs().map(function (x) { return new Test(x.absolutePath()); });
     }
     else if (dirContent.hasSingleExtensionOrOverlay()) {
-        result = dirContent.extnsionsAndOverlays().map(function (x) {
+        result = dirContent.extensionsAndOverlays().map(function (x) {
             var jsonPath = defaultJSONPath(x.extends());
             return new Test(x.absolutePath(), null, jsonPath);
         });
@@ -185,10 +185,9 @@ function getTests(dirContent) {
         result = dirContent.fragments().map(function (x) { return new Test(x.absolutePath()); });
     }
     else if (dirContent.hasExtensionsOrOverlaysAppliedToSingleAPI()) {
-        var ordered = orderExtensionsAndOverlays(dirContent.extnsionsAndOverlays());
-        if (ordered) {
-            var lastOverlayOrExtension = ordered[ordered.length - 1];
-            result = [new Test(lastOverlayOrExtension.absolutePath(), null, defaultJSONPath(ordered[0].extends()))];
+        var topExt = dirContent.topExtensionOrOverlay();
+        if (topExt != null) {
+            result = [new Test(topExt.absolutePath(), null, defaultJSONPath(dirContent.masterAPIs()[0].absolutePath()))];
         }
     }
     return result;
@@ -232,7 +231,7 @@ var RamlFile = (function () {
         return this._ver;
     };
     RamlFile.prototype.extends = function () {
-        return this._extends;
+        return this._extends.replace(/\\/g,'/');
     };
     return RamlFile;
 }());
@@ -248,7 +247,7 @@ var DirectoryContent = (function () {
     DirectoryContent.prototype.allRamlFiles = function () {
         return this.files;
     };
-    DirectoryContent.prototype.extnsionsAndOverlays = function () {
+    DirectoryContent.prototype.extensionsAndOverlays = function () {
         return this.files.filter(function (x) { return x.kind() == RamlFileKind.EXTENSION || x.kind() == RamlFileKind.OVERLAY; });
     };
     DirectoryContent.prototype.masterAPIs = function () {
@@ -261,19 +260,37 @@ var DirectoryContent = (function () {
         return this.files.filter(function (x) { return x.kind() == RamlFileKind.LIBRARY; });
     };
     DirectoryContent.prototype.hasCleanAPIsOnly = function () {
-        return this.extnsionsAndOverlays().length == 0 && this.masterAPIs().length > 0;
+        return this.extensionsAndOverlays().length == 0 && this.masterAPIs().length > 0;
     };
     DirectoryContent.prototype.hasSingleExtensionOrOverlay = function () {
-        return this.extnsionsAndOverlays().length == 1 && this.masterAPIs().length > 0;
+        return this.extensionsAndOverlays().length == 1 && this.masterAPIs().length > 0;
     };
     DirectoryContent.prototype.hasExtensionsOrOverlaysAppliedToSingleAPI = function () {
-        return this.extnsionsAndOverlays().length > 0 && this.masterAPIs().length == 1;
+        return this.extensionsAndOverlays().length > 0 && this.masterAPIs().length == 1;
     };
     DirectoryContent.prototype.hasFragmentsOnly = function () {
         return this.fragments().length == this.files.length;
     };
     DirectoryContent.prototype.hasLibraries = function () {
         return this.libraries().length > 0;
+    };
+    DirectoryContent.prototype.topExtensionOrOverlay = function () {
+        var arr = this.extensionsAndOverlays();
+        var map = {};
+        for (var _i = 0, arr_1 = arr; _i < arr_1.length; _i++) {
+            var x = arr_1[_i];
+            map[x.absolutePath()] = x;
+        }
+        for (var _a = 0, arr_2 = arr; _a < arr_2.length; _a++) {
+            var x = arr_2[_a];
+            var ext = x.extends();
+            delete map[ext];
+        }
+        var keys = Object.keys(map);
+        if (keys.length != 1) {
+            return null;
+        }
+        return map[keys[0]];
     };
     return DirectoryContent;
 }());
@@ -286,7 +303,7 @@ function defaultJSONPath(apiPath) {
 }
 exports.defaultJSONPath = defaultJSONPath;
 ;
-function orderExtensionsAndOverlays(ramlFiles) {
+function orderExtensionsAndOverlaysByIndex(ramlFiles) {
     var indToFileMap = {};
     var pathToIndMap = {};
     for (var _i = 0, ramlFiles_1 = ramlFiles; _i < ramlFiles_1.length; _i++) {

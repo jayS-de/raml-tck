@@ -73,9 +73,11 @@ The test project cases are distinguished by `.raml` file sets located in project
 * Example: [`src/source/TCK/RAML10/Fragments/test001`](https://github.com/mulesoft-labs/raml-tck/tree/master/src/source/TCK/RAML10/Fragments/test001)
 
 #### Multiple Extensions and Overlays project
-* RAML files in the root: single API file, one or more Extension and Overlay files, any number of other files.
+* RAML files in the root:
+  * Master API file
+  * One or more Extension and Overlay files which form a chain orderd by extension relation (with one end in the master API)
+  * Any number of other files
 * TCK JSON filename: `<Master API file name>-tck.json`
-* Note:  The script looks at the digit indexes located in the ends of Extension and Overlay file names in order to detrmine order of application (abscence of index is interpreted as zero). If the script fails to determine the order, an error message is emited, and the test is not executed.
 * Example: [`src/source/TCK/RAML10/Overlays/test023`](https://github.com/mulesoft-labs/raml-tck/tree/master/src/source/TCK/RAML10/Overlays/test023)
 
 
